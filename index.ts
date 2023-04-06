@@ -4,7 +4,8 @@ import { logRequest } from './3-middleware/log';
 import cors from "cors";
 import * as dotenv from 'dotenv';
 
-import { TranslateRouter } from './6-controllers/upload-controller';
+import { TranslateRouter } from './6-controllers/translate-controller';
+import { authRouter } from './6-controllers/auth-controller';
 
 dotenv.config({ path: ".env" });
 
@@ -14,6 +15,7 @@ server.use(json());
 server.use(logRequest);
 
 server.use(TranslateRouter);
+server.use(authRouter);
 
 server.use(catchAll);
 
