@@ -19,8 +19,3 @@ dotenv.config({ path: ".env" });
 //     return pool.execute<T & RowDataPacket[]>(query, params)
 //   }
 
-  export const s3bucket = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESSKEYID,
-    secretAccessKey: process.env.AWS_SECRETKEYACCESSKEY,
-  });
-

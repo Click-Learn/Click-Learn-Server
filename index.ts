@@ -4,18 +4,16 @@ import { logRequest } from './3-middleware/log';
 import cors from "cors";
 import * as dotenv from 'dotenv';
 
-import fileUpload from 'express-fileupload';
-import { uploadRouter } from './6-controllers/upload-controller';
+import { TranslateRouter } from './6-controllers/upload-controller';
 
 dotenv.config({ path: ".env" });
 
 const server = express();
 server.use(cors())
 server.use(json());
-server.use(fileUpload())
 server.use(logRequest);
 
-server.use(uploadRouter);
+server.use(TranslateRouter);
 
 server.use(catchAll);
 
