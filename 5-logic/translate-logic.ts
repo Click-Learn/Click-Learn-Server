@@ -1,21 +1,47 @@
 import * as dotenv from 'dotenv'
-
+import { Configuration, OpenAIApi } from "openai";
 dotenv.config({ path: ".env" });
 
-export async function translateWordToHe(req, res, next) {
-    const {word} = req.body;
+export async function translateWordToHe(word: string) {
     
     // get the translate word
 
-    // return
+    // return 2 words
+    
+
 }
 
+export async function Test() {
 
-export async function saveSelectedWordByUser(req, res, next) {
-    const {word} = req.body;
-    const {translatedWord} = req.body;
+
+        const configuration = new Configuration({
+            apiKey: process.env.OPENAI_API_KEY,
+            
+        });
+        const openai = new OpenAIApi(configuration);
+    
+        try {
+            const completion = await openai.createCompletion({
+              model: "text-davinci-003",
+              prompt: "Hello world",
+            });
+            console.log(completion.data.choices[0].text);
+          } catch (error) {
+            if (error.response) {
+              console.log(error.response.status);
+              console.log(error.response.data);
+            } else {
+              console.log(error.message);
+            }
+          }
+
+    }
+
+
+export async function saveSelectedWordByUser(word, translatedWord) {
 
     // save the words in mysql db
 
 }
+
 
