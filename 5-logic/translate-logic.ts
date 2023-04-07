@@ -6,7 +6,7 @@ export async function translateWordToHe(word: string) {
     
     // get the translate word
 
-    // return 2 words
+    // return 2 words in json
     
 
 }
