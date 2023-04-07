@@ -1,5 +1,5 @@
-import * as dotenv from 'dotenv'
-import AWS from "aws-sdk"
+import * as dotenv from 'dotenv';
+
 dotenv.config({ path: ".env" });
 
 // import mysql, { RowDataPacket } from "mysql2/promise";
