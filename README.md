@@ -1,6 +1,8 @@
 ﻿# Click-Learn-Server
 The ClickLearn web app is built on a server backend that powers its core features and functionalities. The server-side code is responsible for managing user authentication, providing personalized learning experiences, serving up topic-based articles, and tracking user progress.
 
+<img width="300px" src="https://user-images.githubusercontent.com/112413505/230037732-7743b5a9-8e2e-43f1-a21e-0cebb31da707.png" />
+
 # Technology Stack
 The ClickLearn server backend is built using a combination of popular web development technologies. The stack includes:
 
