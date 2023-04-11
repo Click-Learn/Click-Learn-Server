@@ -52,3 +52,20 @@ export async function deleteWord(wordId: number, userId: number) {
   const [rows] = await execute<OkPacket>(query, [wordId, userId]);
   return rows
 }
+
+
+export async function getAllWordsBank() {
+  const query = "SELECT * FROM clicklearn.wordsbank ORDER BY RAND() LIMIT 20;";
+  const [rows] = await execute<WordModel[]>(query, []);
+  return rows
+}
+
+export async function addWordToUser(userId: number, hebrewWord: string, englishWord: string) {
+  console.log(userId);
+  console.log(hebrewWord);
+  console.log(englishWord);
+  
+  const query = "INSERT INTO clicklearn.words (userId, hebrewWord, englishWord) VALUES (?, ?, ?);";
+  const [rows] = await execute<WordModel>(query, [userId, hebrewWord, englishWord]);
+  return rows
+}

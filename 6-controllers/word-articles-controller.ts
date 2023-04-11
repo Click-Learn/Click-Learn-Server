@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { UserModel } from "../4-models/UserModel";
 import { WordModel } from "../4-models/WordsModel";
 import { getUserIdByEmail } from "../5-logic/auth-logic";
-import { deleteWord, favoriteToWord, getArticleByIdByUser, getArticlesByUser, getFavoriteWordsByUser, getWordsByUser, unFavoriteToWord } from "../5-logic/words-articles";
+import { addWordToUser, deleteWord, favoriteToWord, getAllWordsBank, getArticleByIdByUser, getArticlesByUser, getFavoriteWordsByUser, getWordsByUser, unFavoriteToWord } from "../5-logic/words-articles";
 
 export const wordsArticlesRoute = express.Router();
   
@@ -118,6 +118,41 @@ wordsArticlesRoute.delete('/deleteWord/:wordId', async (req, res, next) => {
     
     // get the word with the userId and wordId
     const word = await deleteWord(+wordId, +userId);
+
+    res.json(word).status(200);
+    } catch (e) {
+        console.log(e);       
+    }   
+});
+
+
+wordsArticlesRoute.get('/wordsbank', async (req, res, next) => {
+    try {
+        const token = req.headers.authorization; 
+        
+    const user : UserModel = jwt_decode(token);
+
+    // get the words from bank
+    const words = await getAllWordsBank();
+
+    res.json(words).status(200);
+    } catch (e) {
+        console.log(e);       
+    }   
+});
+
+
+wordsArticlesRoute.post('/wordfrombank', async (req, res, next) => {
+    try {
+        const {hebrewWord, englishWord} = req.body.word;
+        const token = req.headers.authorization; 
+        
+    const user : UserModel = jwt_decode(token);
+    const userId = await getUserIdByEmail(user.email);
+
+        
+    // get the words from bank
+    const word = await addWordToUser(userId, hebrewWord, englishWord);
 
     res.json(word).status(200);
     } catch (e) {
