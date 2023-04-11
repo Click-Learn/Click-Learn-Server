@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv'
+import { OkPacket } from 'mysql2';
 import { Configuration, OpenAIApi } from "openai";
 import { execute } from '../2-utils/dal';
 import { ArticleModel } from '../4-models/ArticleMode';
@@ -31,3 +32,23 @@ export async function getArticleByIdByUser(userId: number, id: number) {
 }
 
 
+
+export async function favoriteToWord(wordId: number, userId: number) {
+    const query = "UPDATE clicklearn.words SET favorite = 1 WHERE id = ? AND userId = ?;";
+    const [rows] = await execute<ArticleModel>(query, [wordId, userId]);
+    return rows
+}
+
+export async function unFavoriteToWord(wordId: number, userId: number) {
+    const query = "UPDATE clicklearn.words SET favorite = 0 WHERE id = ? AND userId = ?;";
+    const [rows] = await execute<ArticleModel>(query, [wordId, userId]);
+    return rows
+}
+
+
+
+export async function deleteWord(wordId: number, userId: number) {
+  const query = "DELETE FROM clicklearn.words WHERE id = ? AND userId = ?;";
+  const [rows] = await execute<OkPacket>(query, [wordId, userId]);
+  return rows
+}
