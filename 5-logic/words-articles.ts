@@ -61,11 +61,14 @@ export async function getAllWordsBank() {
 }
 
 export async function addWordToUser(userId: number, hebrewWord: string, englishWord: string) {
-  console.log(userId);
-  console.log(hebrewWord);
-  console.log(englishWord);
-  
-  const query = "INSERT INTO clicklearn.words (userId, hebrewWord, englishWord) VALUES (?, ?, ?);";
-  const [rows] = await execute<WordModel>(query, [userId, hebrewWord, englishWord]);
-  return rows
+
+  try{
+
+    const query = "INSERT INTO clicklearn.words (userId, hebrewWord, englishWord) VALUES (?, ?, ?);";
+    const [rows] = await execute<WordModel>(query, [userId, hebrewWord, englishWord]);
+    return rows
+  } catch(e) {
+    return {word: englishWord,error: "duplicate"};
+    
+  }
 }
