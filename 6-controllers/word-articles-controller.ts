@@ -152,8 +152,11 @@ wordsArticlesRoute.post('/wordfrombank', async (req, res, next) => {
 
         
     // get the words from bank
-    const word = await addWordToUser(userId, hebrewWord, englishWord);
-
+    const word: any = await addWordToUser(userId, hebrewWord, englishWord);
+        console.log(word);
+        if(word.error === "duplicate"){
+            res.json(word).status(403)
+        }
     res.json(word).status(200);
     } catch (e) {
         console.log(e);       
