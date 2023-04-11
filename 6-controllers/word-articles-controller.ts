@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { UserModel } from "../4-models/UserModel";
 import { WordModel } from "../4-models/WordsModel";
 import { getUserIdByEmail } from "../5-logic/auth-logic";
-import { getArticleByIdByUser, getArticlesByUser, getFavoriteWordsByUser, getWordsByUser } from "../5-logic/words-articles";
+import { deleteWord, favoriteToWord, getArticleByIdByUser, getArticlesByUser, getFavoriteWordsByUser, getWordsByUser, unFavoriteToWord } from "../5-logic/words-articles";
 
 export const wordsArticlesRoute = express.Router();
   
@@ -66,6 +66,61 @@ wordsArticlesRoute.get('/article/:id', async (req, res, next) => {
 
   
   
+// favorite
+
+wordsArticlesRoute.put('/favorite/:wordId', async (req, res, next) => {
+    try {
+
+        const { wordId } = req.params;
+        const token = req.headers.authorization; 
+        
+    const user : UserModel = jwt_decode(token);
+    const userId = await getUserIdByEmail(user.email);
+    
+    // get the word with the userId and wordId
+    const word = await favoriteToWord(+wordId, +userId);
+
+    res.json(word).status(200);
+    } catch (e) {
+        console.log(e);       
+    }   
+});
+
   
-  
-  
+// un favorite
+wordsArticlesRoute.put('/unfavorite/:wordId', async (req, res, next) => {
+    try {
+        const { wordId } = req.params;
+        const token = req.headers.authorization; 
+        
+    const user : UserModel = jwt_decode(token);
+    const userId = await getUserIdByEmail(user.email);
+    
+    // get the word with the userId and wordId
+    const word = await unFavoriteToWord(+wordId, +userId);
+
+    res.json(word).status(200);
+    } catch (e) {
+        console.log(e);       
+    }   
+});
+
+
+
+// delete
+wordsArticlesRoute.delete('/deleteWord/:wordId', async (req, res, next) => {
+    try {
+        const { wordId } = req.params;
+        const token = req.headers.authorization; 
+        
+    const user : UserModel = jwt_decode(token);
+    const userId = await getUserIdByEmail(user.email);
+    
+    // get the word with the userId and wordId
+    const word = await deleteWord(+wordId, +userId);
+
+    res.json(word).status(200);
+    } catch (e) {
+        console.log(e);       
+    }   
+});
