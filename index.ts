@@ -16,9 +16,9 @@ server.use(cors())
 server.use(json());
 server.use(logRequest);
 
+server.use(authRouter);
 server.use(TranslateRouter);
 server.use(wordsArticlesRoute);
-server.use(authRouter);
 // Test();
 server.use(catchAll);
 

@@ -20,13 +20,13 @@ export async function getFavoriteWordsByUser(userId: number) {
 }
 
 export async function getArticlesByUser(userId: number) {
-    const query = "SELECT * FROM clicklearn.articles WHERE userId = ?;";
+    const query = "SELECT * FROM clicklearn.articles WHERE userId = ?";
     const [rows] = await execute<ArticleModel[]>(query, [userId]);
     return rows
 }
 
 export async function getArticleByIdByUser(userId: number, id: number) {
-    const query = "SELECT * FROM clicklearn.articles WHERE userId = ? and id = ?;";
+    const query = "SELECT * FROM clicklearn.articles WHERE userId = ? and id = ?";
     const [rows] = await execute<ArticleModel>(query, [userId, id]);
     return rows
 }
