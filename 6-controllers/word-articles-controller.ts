@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { UserModel } from "../4-models/UserModel";
 import { WordModel } from "../4-models/WordsModel";
 import { getUserIdByEmail } from "../5-logic/auth-logic";
-import { addWordToUser, deleteWord, favoriteToWord, getAllWordsBank, getArticleByIdByUser, getArticlesByUser, getFavoriteWordsByUser, getWordsByUser, unFavoriteToWord } from "../5-logic/words-articles";
+import { addWordToUser, deleteArticle, deleteWord, favoriteToWord, getAllWordsBank, getArticleByIdByUser, getArticlesByUser, getFavoriteWordsByUser, getWordsByUser, unFavoriteToWord } from "../5-logic/words-articles";
 
 export const wordsArticlesRoute = express.Router();
   
@@ -28,7 +28,6 @@ wordsArticlesRoute.get('/test', async (req, res, next) => {
         res.json(words).status(200);
     } catch(e){
         console.log(e);
-        res.status(500).json({ error: 'Server error' });
     }
 });
 
@@ -48,7 +47,6 @@ wordsArticlesRoute.get('/favorite-words', async (req, res, next) => {
     res.json(favoriteWords).status(200);
 } catch(e){
     console.log(e);
-    res.status(500).json({ error: 'Server error' });
 }
 });
 
@@ -74,7 +72,6 @@ wordsArticlesRoute.get('/articles', async (req, res, next) => {
     res.json(articles).status(200);
 } catch(e){
     console.log(e);
-    res.status(500).json({ error: 'Server error' });
 }
 });
 
@@ -95,7 +92,6 @@ wordsArticlesRoute.get('/article/:id', async (req, res, next) => {
   res.json(spesificArticle).status(200);
 } catch(e){
     console.log(e);
-    res.status(500).json({ error: 'Server error' });
 }
 });
   
@@ -121,7 +117,6 @@ wordsArticlesRoute.put('/favorite/:wordId', async (req, res, next) => {
     res.json(word).status(200);
 } catch(e){
     console.log(e);
-    res.status(500).json({ error: 'Server error' });
 }
 });
 
@@ -143,13 +138,12 @@ wordsArticlesRoute.put('/unfavorite/:wordId', async (req, res, next) => {
     res.json(word).status(200);
 } catch(e){
     console.log(e);
-    res.status(500).json({ error: 'Server error' });
 }
 });
 
 
 
-// delete
+// delete word
 wordsArticlesRoute.delete('/deleteWord/:wordId', async (req, res, next) => {
     try {
         const { wordId } = req.params;
@@ -166,7 +160,25 @@ wordsArticlesRoute.delete('/deleteWord/:wordId', async (req, res, next) => {
     res.json(word).status(200);
 } catch(e){
     console.log(e);
-    res.status(500).json({ error: 'Server error' });
+}
+});
+
+// delete article
+wordsArticlesRoute.delete('/deleteArticle/:articleId', async (req, res, next) => {
+    try {
+        const { articleId } = req.params;
+        const token = req.headers.authorization; 
+        if (!token) {
+            throw new Error('Authorization token is missing');
+        }
+    const user : UserModel = jwt_decode(token);
+    const userId = await getUserIdByEmail(user.email);
+    
+    const article = await deleteArticle(+articleId, +userId);
+
+    res.json(article).status(200);
+} catch(e){
+    console.log(e);
 }
 });
 
@@ -185,7 +197,6 @@ wordsArticlesRoute.get('/wordsbank', async (req, res, next) => {
     res.json(words).status(200);
 } catch(e){
     console.log(e);
-    res.status(500).json({ error: 'Server error' });
 }
 });
 
@@ -210,6 +221,5 @@ wordsArticlesRoute.post('/wordfrombank', async (req, res, next) => {
     res.json(word).status(200);
 } catch(e){
     console.log(e);
-    res.status(500).json({ error: 'Server error' });
 }
 });
