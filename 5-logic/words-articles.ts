@@ -47,6 +47,13 @@ export async function unFavoriteToWord(wordId: number, userId: number) {
 
 
 
+export async function deleteArticle(articleId: number, userId: number) {
+  const query = "DELETE FROM clicklearn.articles WHERE id = ? AND userId = ?;";
+  const [rows] = await execute<OkPacket>(query, [articleId, userId]);
+  return rows
+}
+
+
 export async function deleteWord(wordId: number, userId: number) {
   const query = "DELETE FROM clicklearn.words WHERE id = ? AND userId = ?;";
   const [rows] = await execute<OkPacket>(query, [wordId, userId]);
