@@ -8,3 +8,16 @@ export async function getUserIdByEmail(email: string) {
     
     return rows[0].id
 }
+
+
+export async function Register(email: string): Promise<boolean> {
+    const [existingUser] = await execute<UserModel>("SELECT * FROM users WHERE email = ?", [email]);
+  
+    if (existingUser) {
+      return false;
+    }
+    
+    const query = "INSERT INTO clicklearn.users (email) VALUES (?);";
+    const result = await execute(query, [email]);
+    return true;
+  }
