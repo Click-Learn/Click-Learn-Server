@@ -2,14 +2,7 @@ import * as dotenv from 'dotenv'
 import { Configuration, OpenAIApi } from "openai";
 dotenv.config({ path: ".env" });
 
-export async function translateWordToHe(word: string) {
-    
-    // get the translate word
 
-    // return 2 words in json
-    
-
-}
 
 export async function Test() {
 
