@@ -6,8 +6,8 @@ import * as dotenv from 'dotenv';
 
 import { TranslateRouter } from './6-controllers/translate-controller';
 import { authRouter } from './6-controllers/auth-controller';
-import { Test } from './5-logic/translate-logic';
 import { wordsArticlesRoute } from './6-controllers/word-articles-controller';
+import { extenstionRouter } from './6-controllers/extension-controller';
 
 dotenv.config({ path: ".env" });
 
@@ -19,6 +19,7 @@ server.use(logRequest);
 server.use(authRouter);
 server.use(TranslateRouter);
 server.use(wordsArticlesRoute);
+server.use(extenstionRouter);
 // Test();
 server.use(catchAll);
 
