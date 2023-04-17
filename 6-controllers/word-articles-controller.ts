@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { UserModel } from "../4-models/UserModel";
 import { WordModel } from "../4-models/WordsModel";
 import { getUserIdByEmail } from "../5-logic/auth-logic";
-import { addWordToUser, deleteArticle, deleteWord, favoriteToWord, getAllWordsBank, getArticleByIdByUser, getArticlesByUser, getFavoriteWordsByUser, getWordsByUser, unFavoriteToWord } from "../5-logic/words-articles";
+import { addWordToUser, createNewArticleByFavoriteWords, deleteArticle, deleteWord, favoriteToWord, getAllWordsBank, getArticleByIdByUser, getArticlesByUser, getFavoriteWordsByUser, getWordsByUser, unFavoriteToWord } from "../5-logic/words-articles";
 
 export const wordsArticlesRoute = express.Router();
   
@@ -219,6 +219,23 @@ wordsArticlesRoute.post('/wordfrombank', async (req, res, next) => {
             res.json(word).status(403)
         }
     res.json(word).status(200);
+} catch(e){
+    console.log(e);
+}
+});
+
+wordsArticlesRoute.get('/newArticle', async (req, res, next) => {
+    try {
+        const token = req.headers.authorization; 
+        if (!token) {
+            throw new Error('Authorization token is missing');
+        }
+    const user : UserModel = jwt_decode(token);
+
+    // get the words from bank
+    const newArticle = await createNewArticleByFavoriteWords(+user.id);
+
+    res.json(newArticle).status(200);
 } catch(e){
     console.log(e);
 }
