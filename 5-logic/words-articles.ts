@@ -84,22 +84,23 @@ export async function addWordToUser(userId: number, hebrewWord: string, englishW
 
 export async function createNewArticleByFavoriteWords(userId: number){
   
-  const userFavoriteWords = await getFavoriteWordsByUser(userId);
-  const options: any = {
-    method: 'POST',
-    url: 'https://openai80.p.rapidapi.com/chat/completions',
-    headers: {
-      'content-type': 'application/json',
-      'X-RapidAPI-Key': 'a25b14b356msh79c657e7a0d486bp12f5bdjsncefabef81856',
-      'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
-    },
-    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write onlyy the essay No introductions or additions" +'"}]}'
+  // const userFavoriteWords = await getFavoriteWordsByUser(userId);
+  // const options: any = {
+  //   method: 'POST',
+  //   url: 'https://openai80.p.rapidapi.com/chat/completions',
+  //   headers: {
+  //     'content-type': 'application/json',
+  //     'X-RapidAPI-Key': 'a25b14b356msh79c657e7a0d486bp12f5bdjsncefabef81856',
+  //     'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
+  //   },
+  //   data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write onlyy the essay No introductions or additions" +'"}]}'
 
-  };
+  // };
   
-  axios.request(options).then(function (response) {
-    console.log(response.data);
-  }).catch(function (error) {
-    console.error(error);
-  });
+  // axios.request(options).then(function (response) {
+  //   console.log(response.data);
+  // }).catch(function (error) {
+  //   console.error(error);
+  // });
+  
 }

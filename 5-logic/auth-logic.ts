@@ -21,3 +21,14 @@ export async function Register(email: string): Promise<boolean> {
     const result = await execute(query, [email]);
     return true;
   }
+
+export async function Subscribe(email: string) {
+    // const [existingUser] = await execute("SELECT * FROM clicklearn.subscribers WHERE email = ?", [email]);
+    // if (!existingUser) {
+    //   return "duplicate";
+    // }
+    
+    const query = "INSERT INTO clicklearn.subscribers (email) VALUES (?);";
+    const result = await execute(query, [email]);
+    return true;
+  }
