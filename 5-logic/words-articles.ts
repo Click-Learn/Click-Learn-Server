@@ -82,9 +82,7 @@ export async function addWordToUser(userId: number, hebrewWord: string, englishW
 }
 
 
-export async function createNewArticleByFavoriteWords(userId: number){
-// export async function createNewArticleByFavoriteWords(){
-  
+export async function createNewArticleByFavoriteWords(userId: number): Promise<string> {
   const userFavoriteWords = await getFavoriteWordsByUser(userId);
   const options: any = {
     method: 'POST',
@@ -94,33 +92,20 @@ export async function createNewArticleByFavoriteWords(userId: number){
       'X-RapidAPI-Key': 'a25b14b356msh79c657e7a0d486bp12f5bdjsncefabef81856',
       'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
     },
-    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write onlyy the essay No introductions or additions" +'"}]}'
-
+    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write maximum 200 words only the essay No introductions or additions with maximum 200 words" +'"}]}'
   };
-  
-  axios.request(options).then(function (response) {
-    console.log(response.data.choices[0].message.content);
-    return response.data.choices[0].message.content;
-  }).catch(function (error) {
-    console.error(error);
-  });
 
-  // const options: any = {
-  //   method: 'POST',
-  //   url: 'https://openai80.p.rapidapi.com/chat/completions',
-  //   headers: {
-  //     'content-type': 'application/json',
-  //     'X-RapidAPI-Key': 'a25b14b356msh79c657e7a0d486bp12f5bdjsncefabef81856',
-  //     'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
-  //   },
-  //   data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"Hello!"}]}'
-  // };
-  
-  // axios.request(options).then(function (response) {
-  //   console.log(response.data.choices[0].message.content);
-  // }).catch(function (error) {
-  //   console.error(error);
-  // });
+  return new Promise((resolve, reject) => {
+    axios.request(options).then(function (response) {
+      const content = response.data.choices[0].message.content;
+      console.log(content);
+      resolve(content);
+    }).catch(function (error) {
+      console.error(error);
+      reject(error);
+    });
+  });
 }
+
 
 // createNewArticleByFavoriteWords()
