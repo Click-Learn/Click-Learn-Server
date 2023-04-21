@@ -231,10 +231,12 @@ wordsArticlesRoute.get('/newArticle', async (req, res, next) => {
             throw new Error('Authorization token is missing');
         }
         const user: UserModel = jwt_decode(token);
+        const userId = await getUserIdByEmail(user.email);
 
         // get the words from bank
-        const newArticle = await createNewArticleByFavoriteWords(+user.id);
+        const newArticle = await createNewArticleByFavoriteWords(+userId);
         console.log(newArticle);
+
 
         res.json(newArticle).status(200);
     } catch (e) {

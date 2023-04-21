@@ -1,6 +1,5 @@
 import * as dotenv from 'dotenv'
 import { OkPacket } from 'mysql2';
-import { Configuration, OpenAIApi } from "openai";
 import { execute } from '../2-utils/dal';
 import { ArticleModel } from '../4-models/ArticleMode';
 import { WordModel } from '../4-models/WordsModel';
@@ -81,6 +80,16 @@ export async function addWordToUser(userId: number, hebrewWord: string, englishW
   }
 }
 
+export async function saveArticleToUser(userId:number, newArticle: string) {
+  try{
+    const query = "INSERT INTO clicklearn.articles (userId, article, articleTitle) VALUES (?, ?, 'test');";
+    const [rows] = await execute<WordModel>(query, [userId, newArticle]);
+    return rows
+  } catch(e) {
+    console.log(e);
+    return ""
+  }
+}
 
 export async function createNewArticleByFavoriteWords(userId: number): Promise<string> {
   const userFavoriteWords = await getFavoriteWordsByUser(userId);
@@ -92,13 +101,14 @@ export async function createNewArticleByFavoriteWords(userId: number): Promise<s
       'X-RapidAPI-Key': 'a25b14b356msh79c657e7a0d486bp12f5bdjsncefabef81856',
       'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
     },
-    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write maximum 200 words only the essay No introductions or additions with maximum 200 words" +'"}]}'
+    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write maximum 10 words only the essay No introductions or additions with maximum 10 words" +'"}]}'
   };
 
   return new Promise((resolve, reject) => {
     axios.request(options).then(function (response) {
       const content = response.data.choices[0].message.content;
       console.log(content);
+      saveArticleToUser(userId, content)
       resolve(content);
     }).catch(function (error) {
       console.error(error);
