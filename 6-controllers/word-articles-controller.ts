@@ -226,17 +226,19 @@ wordsArticlesRoute.post('/wordfrombank', async (req, res, next) => {
 
 wordsArticlesRoute.get('/newArticle', async (req, res, next) => {
     try {
-        const token = req.headers.authorization; 
+        const token = req.headers.authorization;
         if (!token) {
             throw new Error('Authorization token is missing');
         }
-    const user : UserModel = jwt_decode(token);
+        const user: UserModel = jwt_decode(token);
 
-    // get the words from bank
-    const newArticle = await createNewArticleByFavoriteWords(+user.id);
+        // get the words from bank
+        const newArticle = await createNewArticleByFavoriteWords(+user.id);
+        console.log(newArticle);
 
-    res.json(newArticle).status(200);
-} catch(e){
-    console.log(e);
-}
+        res.json(newArticle).status(200);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
 });
