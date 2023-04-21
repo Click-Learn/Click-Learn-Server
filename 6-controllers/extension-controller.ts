@@ -60,7 +60,7 @@ extenstionRouter.post('/saveWordromExtenstion', async (req, res, next) => {
 
 
     await saveWordstoUser(userId, hebrewWord, englishWord);
-    res.json({ message: 'Word saved successfully.' }).status(200);
+    res.json({ message: '!המילה נשמרה בהצלחה' }).status(200);
   } catch (e) {
     console.log(`Error: ${e.message}`);
     res.status(500).send(`Failed to save the word: ${e.message}`);
