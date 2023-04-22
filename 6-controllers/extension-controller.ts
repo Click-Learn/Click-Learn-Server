@@ -20,8 +20,6 @@ extenstionRouter.post('/translateTheWord', async (req, res, next) => {
 });
   
 extenstionRouter.post('/saveWordromExtenstion', async (req, res, next) => {
-  console.log("test");
-  
   try {
     const { hebrewWord, englishWord, email } = req.body;
     let userId = await getUserIdByEmail(email);

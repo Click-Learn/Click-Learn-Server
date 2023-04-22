@@ -235,7 +235,7 @@ wordsArticlesRoute.get('/newArticle', async (req, res, next) => {
 
         // get the words from bank
         const newArticle = await createNewArticleByFavoriteWords(+userId);
-        console.log(newArticle);
+        // console.log(newArticle);
 
 
         res.json(newArticle).status(200);

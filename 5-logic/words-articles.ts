@@ -68,31 +68,49 @@ export async function getAllWordsBank() {
 }
 
 export async function addWordToUser(userId: number, hebrewWord: string, englishWord: string) {
-
-  try{
-
-    const query = "INSERT INTO clicklearn.words (userId, hebrewWord, englishWord) VALUES (?, ?, ?);";
-    const [rows] = await execute<WordModel>(query, [userId, hebrewWord, englishWord]);
-    return rows
-  } catch(e) {
-    return {word: englishWord,error: "duplicate"};
+// check if user already saved the word
+    const query = "SELECT * FROM clicklearn.words WHERE userId = ? and englishWord = ?;";
+    const [rows] = await execute<WordModel>(query, [userId, englishWord]);
+    if(rows.length === 0){
+      try{
+        
+        const query = "INSERT INTO clicklearn.words (userId, hebrewWord, englishWord) VALUES (?, ?, ?);";
+        const [rows] = await execute<WordModel>(query, [userId, hebrewWord, englishWord]);
+        return rows
+      } catch(e) {
+        return {word: englishWord,error: "duplicate"};
+        
+      }
+    } else {
+      
+      return {word: englishWord,error: "duplicate"};
+    }
+    }
     
+    export async function saveArticleToUser(userId: number, newArticle: any) {
+  try {
+    console.log("here all article" + newArticle)
+    newArticle = JSON.parse(newArticle)
+    const articleTitle = newArticle.articleTitle;
+    const article = newArticle.article;
+    console.log("here title" + articleTitle);
+    console.log("here content" + article);
+    
+    const query = "INSERT INTO clicklearn.articles (userId, article, articleTitle) VALUES (?, ?, ?);";
+    const [rows] = await execute<WordModel>(query, [userId, article, articleTitle]);
+    return rows;
+  } catch (e) {
+    console.log(e);
+    return "";
   }
 }
 
-export async function saveArticleToUser(userId:number, newArticle: string) {
-  try{
-    const query = "INSERT INTO clicklearn.articles (userId, article, articleTitle) VALUES (?, ?, 'test');";
-    const [rows] = await execute<WordModel>(query, [userId, newArticle]);
-    return rows
-  } catch(e) {
-    console.log(e);
-    return ""
-  }
-}
 
 export async function createNewArticleByFavoriteWords(userId: number): Promise<string> {
   const userFavoriteWords = await getFavoriteWordsByUser(userId);
+  const englishWords = userFavoriteWords.map((item) => item.englishWord);
+  console.log(englishWords);
+  
   // const userFavoriteWords = ["blue", "red", "yellow", "white"]
   const options: any = {
     method: 'POST',
@@ -103,15 +121,16 @@ export async function createNewArticleByFavoriteWords(userId: number): Promise<s
       'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
     },
     // data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write maximum 10 words only the essay No introductions or additions with maximum 10 words" +'"}]}'
-    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "Please act as an English teacher. My native language is Hebrew. Write a short article, not exceeding 200 words, using the following words from the user's list: " + userFavoriteWords + "Include a title for the article. Please provide the output in JSON format without any introductions or additions beyond the 200-word limit" +'"}]}'
+    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "Please act as an English teacher. My native language is Hebrew. Write a short article, not exceeding 180 words, using the following words from the user's list: " + englishWords + "Include a title for the article. Please provide the output in JSON format(keys must to be: articleTitle, article) without any introductions or additions beyond the 180-word limit" +'"}]}'
   };
 
   return new Promise((resolve, reject) => {
     axios.request(options).then(function (response) {
       const content = response.data.choices[0].message.content;
-      console.log(content);
-      saveArticleToUser(userId, content)
+      // console.log(content);
+      const row = saveArticleToUser(userId, response.data.choices[0].message.content)
       resolve(content);
+      return row;
     }).catch(function (error) {
       console.error(error);
       reject(error);
