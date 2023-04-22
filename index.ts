@@ -4,7 +4,6 @@ import { logRequest } from './3-middleware/log';
 import cors from "cors";
 import * as dotenv from 'dotenv';
 
-import { TranslateRouter } from './6-controllers/translate-controller';
 import { authRouter } from './6-controllers/auth-controller';
 import { wordsArticlesRoute } from './6-controllers/word-articles-controller';
 import { extenstionRouter } from './6-controllers/extension-controller';
@@ -17,7 +16,6 @@ server.use(json());
 server.use(logRequest);
 
 server.use(authRouter);
-server.use(TranslateRouter);
 server.use(wordsArticlesRoute);
 server.use(extenstionRouter);
 // Test();
