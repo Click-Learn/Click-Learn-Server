@@ -20,7 +20,6 @@ server.use(wordsArticlesRoute);
 server.use(extenstionRouter);
 // Test();
 server.use(catchAll);
-
 server.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}...`);
 });

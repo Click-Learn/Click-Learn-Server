@@ -93,6 +93,7 @@ export async function saveArticleToUser(userId:number, newArticle: string) {
 
 export async function createNewArticleByFavoriteWords(userId: number): Promise<string> {
   const userFavoriteWords = await getFavoriteWordsByUser(userId);
+  // const userFavoriteWords = ["blue", "red", "yellow", "white"]
   const options: any = {
     method: 'POST',
     url: 'https://openai80.p.rapidapi.com/chat/completions',
@@ -101,7 +102,8 @@ export async function createNewArticleByFavoriteWords(userId: number): Promise<s
       'X-RapidAPI-Key': 'a25b14b356msh79c657e7a0d486bp12f5bdjsncefabef81856',
       'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
     },
-    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write maximum 10 words only the essay No introductions or additions with maximum 10 words" +'"}]}'
+    // data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "please act as english teacher ,My native language is Hebrew. please write for me A short essay using the following words. words =" + userFavoriteWords + "please write maximum 10 words only the essay No introductions or additions with maximum 10 words" +'"}]}'
+    data: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"' + "Please act as an English teacher. My native language is Hebrew. Write a short article, not exceeding 200 words, using the following words from the user's list: " + userFavoriteWords + "Include a title for the article. Please provide the output in JSON format without any introductions or additions beyond the 200-word limit" +'"}]}'
   };
 
   return new Promise((resolve, reject) => {
