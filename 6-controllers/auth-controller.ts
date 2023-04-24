@@ -22,12 +22,7 @@ authRouter.post('/subscribe', async (req, res) => {
   try {
     const { email } = req.body;
 
-    // send to function to push the email into db
     const sub = await Subscribe(email);
-    // if (sub === "duplicate") {
-    //   return res.json("duplicate").status(403);
-    // }
-
     res.status(200).json({ email: email });
   } catch (e) {
     console.log(`Error: ${e.message}`);
