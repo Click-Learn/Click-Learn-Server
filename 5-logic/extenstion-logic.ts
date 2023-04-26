@@ -28,12 +28,12 @@ export async function translateText(text) {
   }
 
   export async function saveWordstoUser(userId: number, hebrewWord: string, englishWord: string) {
-    const query = "SELECT * FROM clicklearn.words WHERE userId = ? and englishWord = ?;";
+    const query = "SELECT * FROM words WHERE userId = ? and englishWord = ?;";
     const [rows] = await execute<WordModel>(query, [userId, englishWord]);
     if(rows.length === 0){
       try{
         
-        const query = "INSERT INTO clicklearn.words (userId, hebrewWord, englishWord) VALUES (?, ?, ?);";
+        const query = "INSERT INTO words (userId, hebrewWord, englishWord) VALUES (?, ?, ?);";
         const [rows] = await execute<WordModel>(query, [userId, hebrewWord, englishWord]);
         return rows
       } catch(e) {

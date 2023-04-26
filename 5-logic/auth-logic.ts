@@ -3,7 +3,7 @@ import { UserModel } from "../4-models/UserModel";
 
 export async function getUserIdByEmail(email: string) {
     
-    const query = "SELECT * FROM clicklearn.users WHERE email = ?;";
+    const query = "SELECT * FROM users WHERE email = ?;";
     const [rows] = await execute<UserModel>(query, [email]);
     if(!rows[0]){
       console.log("there is no user with this email");
@@ -14,7 +14,7 @@ export async function getUserIdByEmail(email: string) {
 
 
 export async function Register(email: string): Promise<boolean> {
-    const [existingUser] = await execute<UserModel>("SELECT * FROM clicklearn.users WHERE email = ?", [email]);
+    const [existingUser] = await execute<UserModel>("SELECT * FROM users WHERE email = ?", [email]);
     console.log(existingUser);
     console.log("test");
     
@@ -22,18 +22,18 @@ export async function Register(email: string): Promise<boolean> {
       return false;
     }
     
-    const query = "INSERT INTO clicklearn.users (email) VALUES (?);";
+    const query = "INSERT INTO users (email) VALUES (?);";
     const result = await execute(query, [email]);
     return true;
   }
 
 export async function Subscribe(email: string) {
-    // const [existingUser] = await execute("SELECT * FROM clicklearn.subscribers WHERE email = ?", [email]);
+    // const [existingUser] = await execute("SELECT * FROM subscribers WHERE email = ?", [email]);
     // if (!existingUser) {
     //   return "duplicate";
     // }
     
-    const query = "INSERT INTO clicklearn.subscribers (email) VALUES (?);";
+    const query = "INSERT INTO subscribers (email) VALUES (?);";
     const result = await execute(query, [email]);
     return true;
   }
