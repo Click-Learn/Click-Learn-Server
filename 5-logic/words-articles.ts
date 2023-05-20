@@ -135,6 +135,8 @@ export async function createNewArticleByFavoriteWords(userId: number) {
   });
   const row = saveArticleToUser(userId, response.data.choices[0].message.content)
   return row;
+}
+
     // .then(response => console.log(response.data.choices[0].message.content))
     // .catch(error => console.error(error));
   
@@ -163,7 +165,6 @@ export async function createNewArticleByFavoriteWords(userId: number) {
   //     reject(error);
   //   });
   // });
-}
 
 
 // createNewArticleByFavoriteWords()
