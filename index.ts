@@ -7,6 +7,7 @@ import * as dotenv from 'dotenv';
 import { authRouter } from './6-controllers/auth-controller';
 import { wordsArticlesRoute } from './6-controllers/word-articles-controller';
 import { extenstionRouter } from './6-controllers/extension-controller';
+import { MessagesRoute } from './6-controllers/messages-route';
 
 dotenv.config({ path: ".env" });
 
@@ -18,6 +19,7 @@ server.use(logRequest);
 server.use(authRouter);
 server.use(wordsArticlesRoute);
 server.use(extenstionRouter);
+server.use(MessagesRoute);
 // Test();
 server.use(catchAll);
 server.listen(process.env.PORT, () => {
