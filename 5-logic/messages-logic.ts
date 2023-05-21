@@ -14,41 +14,12 @@ export async function getMessagesByUserId(userId: number): Promise<any> {
     return results;
 }
 
+export async function deleteMessagesByUserId(userId: number): Promise<any> {    
+    const query = `DELETE FROM messages WHERE userId = ? AND id > 0;`;
+    const [results]: any = await execute<OkPacket>(query, [userId]);
+    return results;
+}
 
-
-
-
-// export async function getMessageFromChatGPTandSave(message: string, userId: number) {
-//     const history = await getMessagesByUserId(userId);
-
-//     const messages = [];
-//     messages.push({ role: 'system', content: 'you are a helpful assistant' })
-
-//     for (const msg of history) {
-//         if (msg.role === 0) {
-//             messages.push({ role: 'assistant', content: msg.message });
-//         } else if (msg.role === 1) {
-//             messages.push({ role: 'user', content: msg.message });
-//         }
-//     }
-//     console.log(history);
-    
-
-//     try {
-//         const completion: any = openai.createChatCompletion({
-//             model: 'gpt-3.5-turbo',
-//             messages: messages
-//         })
-//         let { data } = await completion
-//         const reply = data.choices[0].message.content;
-//         const timeStamp = new Date().getTime();
-//         const query = 'INSERT INTO messages(message,role,timestamp,userId,roomId) VALUES(?,?,?,?,?)'
-//         const res = await execute<OkPacket>(query, [reply, 0, timeStamp, +id, roomId]);
-//         return reply
-//     } catch (e) {
-//         return 'There has been an error, try again'
-//     }
-// }
 
 import axios from 'axios';
 
@@ -56,7 +27,7 @@ export async function getMessageFromChatGPTandSave(userId: number) {
   const history = await getMessagesByUserId(userId);
 
   const messages = [];
-  messages.push({ role: 'system', content: 'you are a helpful assistant' });
+  messages.push({ role: 'system', content: 'act like english teacher for user talks hebrew language and he wants to learn english. start chatting and ask questions see what he is answer, correct his answer then ask another uestion to make a flow conversation' });
 
   for (const msg of history) {
     if (msg.role === 0) {
@@ -65,7 +36,7 @@ export async function getMessageFromChatGPTandSave(userId: number) {
       messages.push({ role: 'user', content: msg.message });
     }
   }
-  console.log(history);
+  // console.log(history);
 
   try {
     const requestData = {
