@@ -15,7 +15,7 @@ export async function getMessagesByUserId(userId: number): Promise<any> {
 }
 export async function getLast10MessagesByUserId(userId: number): Promise<any> {    
     
-    const query = `SELECT * FROM messages WHERE userId = ? ORDER BY timestamp DESC LIMIT 10;`;
+    const query = `SELECT * FROM (SELECT * FROM messages WHERE userId = ? ORDER BY timestamp DESC LIMIT 10) subquery ORDER BY timestamp ASC;`;
     const [results]: any = await execute<OkPacket>(query, [userId]);
     return results;
 }
