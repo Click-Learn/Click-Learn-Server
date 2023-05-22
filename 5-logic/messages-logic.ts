@@ -13,6 +13,12 @@ export async function getMessagesByUserId(userId: number): Promise<any> {
     const [results]: any = await execute<OkPacket>(query, [userId]);
     return results;
 }
+export async function getLast10MessagesByUserId(userId: number): Promise<any> {    
+    
+    const query = `SELECT * FROM clicklearn.messages WHERE userId = ? ORDER BY timestamp DESC LIMIT 10;`;
+    const [results]: any = await execute<OkPacket>(query, [userId]);
+    return results;
+}
 
 export async function deleteMessagesByUserId(userId: number): Promise<any> {    
     const query = `DELETE FROM messages WHERE userId = ? AND id > 0;`;
@@ -22,12 +28,18 @@ export async function deleteMessagesByUserId(userId: number): Promise<any> {
 
 
 import axios from 'axios';
+import { getFavoriteWordsByUser } from "./words-articles";
 
 export async function getMessageFromChatGPTandSave(userId: number) {
-  const history = await getMessagesByUserId(userId);
 
+  const history = await getLast10MessagesByUserId(userId);
+  const favoriteWords = await getFavoriteWordsByUser(userId)
+  const favoriteEnglishWords = favoriteWords.map((item) => item.englishWord);
+
+  console.log(favoriteWords);
+  
   const messages = [];
-  messages.push({ role: 'system', content: 'act like english teacher for user talks hebrew language and he wants to learn english. start chatting and ask questions see what he is answer, correct his answer then ask another uestion to make a flow conversation' });
+  messages.push({ role: 'system', content: 'act like english teacher for user talks hebrew language and he wants to learn english. start chatting and ask questions see what he is answer, correct his answer then ask another uestion to make a flow conversation, asnwer shortly. and this is my favorite words:' + favoriteEnglishWords });
 
   for (const msg of history) {
     if (msg.role === 0) {
