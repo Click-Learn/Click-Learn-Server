@@ -39,7 +39,7 @@ export async function getMessageFromChatGPTandSave(userId: number) {
   console.log(favoriteWords);
   
   const messages = [];
-  messages.push({ role: 'system', content: 'act like english teacher for user talks hebrew language and he wants to learn english. start chatting and ask questions see what he is answer, correct his answer then ask another uestion to make a flow conversation, asnwer shortly. and this is my favorite words:' + favoriteEnglishWords });
+  messages.push({ role: 'system', content: 'asnwer shortly, act like english teacher for user talks hebrew language and he wants to learn english.do not write me a full conversation. ask me 1 question, after i wll answer you asnwer another one for every rquest give me maximum 1 question and remember fix my english if it incorrect. start chatting and ask questions see what he is answer, correct his answer then ask another uestion to make a flow conversation, asnwer shortly. and this is my favorite words:' + favoriteEnglishWords });
 
   for (const msg of history) {
     if (msg.role === 0) {
