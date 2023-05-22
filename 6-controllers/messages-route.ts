@@ -71,6 +71,7 @@ MessagesRoute.post('/newMessage', async (req, res) => {
             return;
 
     } catch (e) {
-        res.status(401).json(e)
+        console.log(e);
+        res.status(401)
     }
 })
